@@ -1,4 +1,5 @@
 import math
+import numpy as np
 
 
 class Vector:
@@ -26,6 +27,12 @@ class Vector:
     
     def __mul__(self, scalar):
         return Vector(self.x * scalar, self.y * scalar, self.z * scalar)
+
+    def __truediv__(self, scalar):
+        return Vector(self.x / scalar, self.y / scalar, self.z / scalar)
+
+    def to_array(self):
+        return np.array([self.x, self.y, self.z])
     
     def dot(self, other):
         return self.x * other.x + self.y * other.y + self.z * other.z
@@ -77,6 +84,7 @@ class Vector:
         cost = min(max(cost, -1 + EPSILON), 1.0 - EPSILON)
 
         return math.acos(cost)
-    
-    # Implemente os métodos de vetores aqui
-    
+
+    def magnitude(self):
+        return np.linalg.norm(self.to_array())
+        

@@ -1,7 +1,11 @@
+import numpy as np
+
 class Sphere:
-    def __init__(self, center, radius):
+    def __init__(self, center, radius, color):
         self.center = center
         self.radius = radius
+        self.color = color
+
     
     def intersect(self, ray):
         oc = ray.origin - self.center

@@ -23,9 +23,11 @@ class Point:
             return Point(self.x + other.x, self.y + other.y, self.z + other.z)
            
     def __sub__(self, other):
-        if isinstance(other, Point): 
+        if isinstance(other, Point):
             return Vector(self.x - other.x, self.y - other.y, self.z - other.z)
-        raise TypeError("Subtração apenas entre dois pontos.")
+        elif isinstance(other, Vector):
+            return Point(self.x - other.x, self.y - other.y, self.z - other.z)
+        raise TypeError("Subtração apenas entre dois pontos ou entre um ponto e um vetor.")
     
     def scale(self, factor):
         return Point(self.x * factor, self.y * factor, self.z * factor)
