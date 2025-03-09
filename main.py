@@ -5,6 +5,7 @@ from sphere import Sphere
 from plane import Plane
 from ray import Ray
 from camera import Camera
+from color import Color
 import numpy as np
 import cv2
 
@@ -19,31 +20,28 @@ def main():
 
     camera = Camera(camera_position, camera_look_at, camera_up_vector, camera_distance, camera_h_res, camera_v_res)
 
-    image = np.zeros((camera_h_res, camera_v_res), dtype=np.uint8)
+    image = np.zeros((camera_v_res, camera_h_res, 3), dtype=np.uint8)
 
     # Lista de objetos
     objects = [
-        Sphere(Point(0, 0, -5), 1, 255),
-        Sphere(Point(-2, 1, -6), 1.2, 200),
-        Sphere(Point(2, -1, -4), 0.8, 150),
-        Plane(Point(0, -1, 0), Vector(0, 1, 0), 100)
+        Sphere(Point(0, 0, -5), 1, Color(255, 0, 0)),
+        Sphere(Point(-2, 1, -6), 1.2, Color(0, 255, 0)),
+        Sphere(Point(2, -1, -4), 0.8, Color(0, 0, 255)),
+        Plane(Point(0, -1, 0), Vector(0, 1, 0), Color(255, 255, 0)) 
     ]
-
-    # Criando matriz de pixels
-    image = np.zeros((camera_v_res, camera_h_res), dtype=np.uint8)
-
+ 
     # Testando interseções
     for j in range(camera_v_res):
         for i in range(camera_h_res):
             ray = camera.get_ray(i, j)
             closest_t = float('inf')
-            color = 0
+            color =  Color(0, 0, 0).array()
             
             for obj in objects:
                 t = obj.intersect(ray)
                 if t and t < closest_t:
                     closest_t = t
-                    color = obj.color
+                    color = obj.color.array()
             
             image[j, i] = color
 
