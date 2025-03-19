@@ -1,0 +1,13 @@
+# exported by https://3dviewer.net
+newmtl White
+Kd 1 1 1
+d 1
+Ka 0 0 0
+Ks 1 1 1
+Ns 0
+newmtl Red
+Kd 1 0 0
+d 1
+Ka 0.4980392156862745 0.4980392156862745 0.4980392156862745
+Ks 1 1 1
+Ns 0
