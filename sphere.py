@@ -1,10 +1,11 @@
 import numpy as np
+from intersection import Intersection
 
 class Sphere:
-    def __init__(self, center, radius, color):
+    def __init__(self, center, radius, material):
         self.center = center
         self.radius = radius
-        self.color = color
+        self.material = material
 
     
     def intersect(self, ray):
@@ -19,4 +20,9 @@ class Sphere:
         else:
             t1 = (-b - np.sqrt(discriminant)) / (2 * a)
             t2 = (-b + np.sqrt(discriminant)) / (2 * a)
-            return min(t1, t2) if t1 > 0 else t2 if t2 > 0 else None
+            t = min(t1, t2) if t1 > 1e-4 else t2
+            if t > 1e-4:
+                hit_point = ray.origin + ray.direction * t
+                normal = (hit_point - self.center).normalize()
+                return Intersection(t, hit_point, normal, self.material)
+            return None

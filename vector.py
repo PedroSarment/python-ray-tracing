@@ -87,4 +87,7 @@ class Vector:
 
     def magnitude(self):
         return np.linalg.norm(self.to_array())
+
+    def to_numpy_array(self):
+        return np.array([self.x, self.y, self.z], dtype=np.float32)
         

@@ -52,7 +52,3 @@ class Point:
             return np.linalg.norm(np.cross(self.to_array() - line_point.to_array(), line_vector.to_array())) / line_vector.magnitude()
         raise TypeError("line_point deve ser Point e line_vector deve ser Vector.")
     
-    
-    
-    # Implemente os métodos de pontos aqui
-    
