@@ -1,4 +1,5 @@
 from color import Color
+from transformation import Transformation
 
 class TriangleMesh:
     def __init__(self, vertices, faces, normals, color):
@@ -8,6 +9,9 @@ class TriangleMesh:
         self.color = color
         self.n_triangles = len(faces)
         self.n_vertices = len(vertices)
+    
+    def transform(self, transformation_matrix):
+        self.vertices = [Transformation.apply_transformation(transformation_matrix, v) for v in self.vertices]
     
     def intersect(self, ray):
         closest_t = float('inf')

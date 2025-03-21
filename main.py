@@ -9,10 +9,13 @@ from color import Color
 import numpy as np
 import cv2
 from mesh import TriangleMesh
+from transformation import Transformation
+import copy
+
 
 def main():
    
-    camera_position = Point(0, 0, 20)
+    camera_position = Point(2, 0, 30)
     camera_look_at = Point(0, 0, 0)
     camera_up_vector = Vector(0, 1, 0)
     camera_distance = 1
@@ -23,6 +26,15 @@ def main():
 
     image = np.zeros((camera_v_res, camera_h_res, 3), dtype=np.uint8)
 
+    # Objetos primeira Entrega
+    # objects = [
+    #     mesh,
+    #     Sphere(Point(-2, 1, -6), 1.2, Color(0, 255, 0)),
+    #     Sphere(Point(2, -1, -4), 0.8, Color(0, 0, 255)),
+    #     Plane(Point(0, -1, 0), Vector(0, 1, 0), Color(255, 255, 0)) 
+    # ]
+
+    # Malha de triângulos para a primeira parte da segunda entrega
     obj_reader = ObjReader("./inputs/icosahedron/icosahedron.obj")
     mesh = TriangleMesh(
         vertices=obj_reader.get_vertices(),
@@ -31,13 +43,20 @@ def main():
         color=Color(0, 255, 0)
     )
 
-    # Lista de objetos
+    # Objetos primeira Entrega
     objects = [
-        mesh,
-        #Sphere(Point(-2, 1, -6), 1.2, Color(0, 255, 0)),
-        #Sphere(Point(2, -1, -4), 0.8, Color(0, 0, 255)),
-        #Plane(Point(0, -1, 0), Vector(0, 1, 0), Color(255, 255, 0)) 
+        mesh
     ]
+
+    
+    # Mesh transladada e rotacionadaa
+    meshRotated = copy.deepcopy(mesh)
+    translation_matrix = Transformation.translation(5, 0, 0) 
+    meshRotated.transform(translation_matrix)
+    euler_matrix = Transformation.rotation_x(np.radians(60))
+    meshRotated.transform(euler_matrix)
+    objects.append( meshRotated )
+
  
     # Testando interseções
     for j in range(camera_v_res):
