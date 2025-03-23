@@ -1,56 +1,51 @@
-from color import Color
+from triangle import Triangle
 from transformation import Transformation
-from material import Material
 from intersection import Intersection
 from vector import Vector
+from material import Material
 
-class TriangleMesh:
-    def __init__(self, vertices, faces, normals, material):
-        self.vertices = vertices 
-        self.faces = faces
-        self.normals = [Vector(n.x, n.y, n.z) for n in normals]
-        self.material = material
-        self.n_triangles = len(faces)
-        self.n_vertices = len(vertices)
-    
+class Mesh:
+    def __init__(self, vertices, faces, normals):
+        self.triangles = []
+
+        for face in faces:
+            v0 = vertices[face.vertice_indices[0]]
+            v1 = vertices[face.vertice_indices[1]]
+            v2 = vertices[face.vertice_indices[2]]
+
+            normal = None
+            if face.normal_indices and face.normal_indices[0] < len(normals):
+                normal = normals[face.normal_indices[0]]
+
+            material = Material(
+                ka=face.ka, 
+                kd=face.kd, 
+                ks=face.ks,    
+                ke=face.ke,   
+                ns=face.ns, 
+                ni=face.ni, 
+                d=face.d         
+            )
+
+            triangle = Triangle(
+                v0=v0,
+                v1=v1,
+                v2=v2,
+                normal=normal,
+                material=material 
+            )
+            self.triangles.append(triangle)
+
     def transform(self, transformation_matrix):
-        self.vertices = [Transformation.apply_transformation(transformation_matrix, v) for v in self.vertices]
-    
+        for triangle in self.triangles:
+            triangle.transform(transformation_matrix)
+
     def intersect(self, ray):
         closest_t = float('inf')
-        hit_data = None
-
-        for face in self.faces:
-            v0, v1, v2 = [self.vertices[i] for i in face]
-            edge1 = v1 - v0
-            edge2 = v2 - v0
-            h = ray.direction.cross(edge2)
-            a = edge1.dot(h)
-            
-            if -1e-6 < a < 1e-6:
-                continue
-            
-            f = 1.0 / a
-            s = ray.origin - v0
-            u = f * s.dot(h)
-            if u < 0.0 or u > 1.0:
-                continue
-            
-            q = s.cross(edge1)
-            v = f * ray.direction.dot(q)
-            if v < 0.0 or u + v > 1.0:
-                continue
-            
-            t = f * edge2.dot(q)
-            if t > 1e-6 and t < closest_t:
-                closest_t = t
-                hit_point = ray.origin + ray.direction * t
-                normal = edge1.cross(edge2).normalize()
-                hit_data = Intersection(
-                    t=t,
-                    hit_point=hit_point,
-                    normal=normal,
-                    material=self.material
-                )
-        
-        return hit_data
+        closest_hit = None
+        for triangle in self.triangles:
+            hit = triangle.intersect(ray)
+            if hit and hit.t < closest_t:
+                closest_t = hit.t
+                closest_hit = hit
+        return closest_hit

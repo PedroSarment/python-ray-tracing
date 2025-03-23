@@ -1,29 +1,50 @@
+from color import Color
 from ray import Ray
-import numpy as np
+from vector import Vector
 
 class Phong:
-    
+
     @staticmethod
     def phong_illumination(hit_point, normal, view_dir, material, scene_lights, objects):
+        ka = material.ka
+        kd = material.kd
+        ks = material.ks
+        ns = material.ns 
 
-        color = material.ka * scene_lights.ambient
+        N = normal.normalize()
+        V = view_dir.normalize()
+
+        if N.dot(V) < 0:
+            N = N * -1
+
+        ambient_intensity = Vector(*scene_lights.ambient)
+        color = ka * (ambient_intensity / 255)
 
         for light in scene_lights.lights:
-            light_dir = (light.position - hit_point).normalize()
+            L = (light.position - hit_point).normalize()
+            R = ((N * 2 * N.dot(L)) - L).normalize()
 
-            shadow_ray = Ray(hit_point + normal * 1e-4, light_dir)
-            in_shadow = any(obj.intersect(shadow_ray) for obj in objects)
-
+            shadow_origin = hit_point + N * 1e-3
+            shadow_ray = Ray(shadow_origin, L)
+            in_shadow = any(
+                (inter := obj.intersect(shadow_ray)) and inter.t > 1e-3
+                for obj in objects
+            )
             if in_shadow:
-                continue 
+                continue
 
-            diff_intensity = max(normal.dot(light_dir), 0)
-            diffuse = material.kd * light.intensity * diff_intensity
+            light_intensity = Vector(*light.intensity)
 
-            reflect_dir = ((normal * normal.dot(light_dir) * 2) - light_dir).normalize()
-            spec_intensity = max(view_dir.dot(reflect_dir), 0) ** material.eta
-            specular = material.ks * light.intensity * spec_intensity
+            diff = max(N.dot(L), 0)
+            diffuse = kd * (light_intensity / 255) * diff
+
+            spec = max(V.dot(R), 0) ** ns
+            specular = ks * (light_intensity / 255) * spec
 
             color += diffuse + specular
 
-        return np.clip(color, 0, 255).astype(np.uint8)
+        final_r = min(max(int(color.x * 255), 0), 255)
+        final_g = min(max(int(color.y * 255), 0), 255)
+        final_b = min(max(int(color.z * 255), 0), 255)
+
+        return Color(final_r, final_g, final_b)

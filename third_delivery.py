@@ -1,42 +1,81 @@
 
 from obj_reader import ObjReader
 from color import Color
-from mesh import TriangleMesh
+from mesh import Mesh
 from transformation import Transformation
 import copy
 import numpy as np
-from material import Material
+from point import Point
+from vector import Vector
+from camera import Camera
+from scene import Scene
+from light import Light
+from phong import Phong
 
 def thirdDelivery():
+
+    camera_position = Point(0, 0, 30)
+    camera_look_at = Point(4, 2, 0)
+    camera_up_vector = Vector(0, 1, 0)
+    camera_distance = 4
+    camera_h_res = 800
+    camera_v_res = 600
+
+    camera = Camera(camera_position, camera_look_at, camera_up_vector, camera_distance, camera_h_res, camera_v_res)
+
+    image = np.zeros((camera_v_res, camera_h_res, 3), dtype=np.uint8)
+
     obj_reader = ObjReader("./inputs/icosahedron/icosahedron.obj")
 
-    material = Material(
-        ka=obj_reader.get_ka(), 
-        kd=obj_reader.get_kd(),
-        ks=obj_reader.get_ks(),
-        kr=(0.0, 0.0, 0.0), 
-        kt=(0.0, 0.0, 0.0),
-        eta=obj_reader.get_ns()
-    )
-    mesh = TriangleMesh(
+    mesh = Mesh(
         vertices=obj_reader.get_vertices(),
-        faces=[face.vertice_indices for face in obj_reader.get_faces()],
+        faces=obj_reader.get_faces(),
         normals=obj_reader.normals,
-        material=material
     )
 
     objects = [
         mesh
     ]
 
-    #Mesh transladada e rotacionadaa
     meshRotated = copy.deepcopy(mesh)
-    translation_matrix = Transformation.translation(2, 0, 0) 
+    translation_matrix = Transformation.translation(3, 0, 0) 
     meshRotated.transform(translation_matrix)
-    matrix = Transformation.rotation_x(np.radians(60))
+    matrix = Transformation.rotation_x(np.radians(180))
     meshRotated.transform(matrix)
-    matrix = Transformation.rotation_z(np.radians(60))
+    matrix = Transformation.rotation_z(np.radians(10))
+    meshRotated.transform(matrix)
+    matrix = Transformation.rotation_y(np.radians(60))
     meshRotated.transform(matrix)
     objects.append( meshRotated )
 
-    return objects
+    scene_lights = Scene(
+        lights=[
+            Light(Point(30, 10, 20), (190, 190, 190)),
+            Light(Point(-40, 10, 20), (80, 80, 80))  
+        ],
+        ambient=(100, 100, 100)
+    )
+
+    for j in range(camera.v_res):
+        for i in range(camera.h_res):
+            ray = camera.get_ray(i, j)
+            closest_t = float('inf')
+            color = Color(255, 255, 255)
+
+            for obj in objects:
+                result = obj.intersect(ray)
+                if result and result.t < closest_t:
+                    closest_t = result.t
+                    view_dir = (camera.position - result.hit_point).normalize()
+                    color = Phong.phong_illumination(
+                        hit_point=result.hit_point,
+                        normal=result.normal,
+                        view_dir=view_dir,
+                        material=result.material,
+                        scene_lights=scene_lights,
+                        objects=objects
+                    )
+
+            image[j, i] = color.array()
+
+    return image

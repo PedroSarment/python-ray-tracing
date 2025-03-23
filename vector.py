@@ -3,14 +3,7 @@ import numpy as np
 
 
 class Vector:
-    """
-    Representa um vetor em um espaço tridimensional.
 
-    Atributos:
-        x (float): Componente do vetor na direção X.
-        y (float): Componente do vetor na direção Y.
-        z (float): Componente do vetor na direção Z.
-    """
     def __init__(self, x: float, y: float, z:float):
         self.x = x
         self.y = y
@@ -43,6 +36,15 @@ class Vector:
             self.z * other.x - self.x * other.z,
             self.x * other.y - self.y * other.x
         )
+
+    def __mul__(self, other):
+        if isinstance(other, Vector):
+            return Vector(self.x * other.x, self.y * other.y, self.z * other.z)
+        else:
+            return Vector(self.x * other, self.y * other, self.z * other)
+    
+    def __rmul__(self, other):
+        return self.__mul__(other)
     
     def normalize(self):
         mag = self.magnitude()
