@@ -60,4 +60,10 @@ class Render:
                 refracted_color = refracted_color * hit_result.material.kt
 
         final_color = (local_color + reflected_color + refracted_color).clip()
+
+        if reflected_color.r > 0 or reflected_color.g > 0 or reflected_color.b > 0:
+            print(f"[DEBUG] reflected_color : ({reflected_color.r:.3f}, {reflected_color.g:.3f}, {reflected_color.b:.3f})")
+        if refracted_color.r > 0 or refracted_color.g > 0 or refracted_color.b > 0:
+            print(f"[DEBUG] refracted_color : ({refracted_color.r:.3f}, {refracted_color.g:.3f}, {refracted_color.b:.3f})")
+   
         return final_color

@@ -55,9 +55,9 @@ def secondDelivery():
                     closest_t = result.t
                     view_dir = (camera.position - result.hit_point).normalize()
                     color = Color(
-                        int(result.material.kd[0] * 255),
-                        int(result.material.kd[1] * 255),
-                        int(result.material.kd[2] * 255)
+                        int(result.material.kd.x * 255),
+                        int(result.material.kd.y * 255),
+                        int(result.material.kd.z * 255)
                     )
 
             image[j, i] = color.array()

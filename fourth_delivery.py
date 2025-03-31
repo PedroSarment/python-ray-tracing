@@ -18,9 +18,9 @@ from material import Material
 
 def fourthDelivery():
 
-    camera_position = Point(0, 0, 30)
-    camera_look_at = Point(4, 2, 0)
-    camera_up_vector = Vector(0, 1, 0)
+    camera_position = Point(-10, 0, 30)
+    camera_look_at = Point(4, 0, 0)
+    camera_up_vector = Vector(0, -1, 0)
     camera_distance = 2
     camera_h_res = 800
     camera_v_res = 600
@@ -32,7 +32,7 @@ def fourthDelivery():
     objects = []
 
     objects.append(Sphere(
-    center=Point(2, -2, 0),
+    center=Point(-1, 0, 0),
     radius=1.5,
     material=Material(
         ka=Vector(0.0, 0.1, 0.0),           
@@ -46,7 +46,7 @@ def fourthDelivery():
     ))
 
     objects.append(Sphere(
-        center=Point(6, -2, 0),
+        center=Point(3, 0, 0),
         radius=1.5,
         material=Material(
             ka=Vector(0.1, 0.1, 0.1),
@@ -60,7 +60,7 @@ def fourthDelivery():
     ))
 
     objects.append(Sphere(
-    center=Point(12, -2, -6),
+    center=Point(8, 0, 0),
     radius=1.5,
     material=Material(
         ka=Vector(0.05, 0.05, 0.05),
@@ -73,10 +73,27 @@ def fourthDelivery():
         )
     ))
 
+    objects.append(Plane(
+        point=Point(0, -5, 0),
+        normal=Vector(0, 5, 0),
+        material=Material(
+            ka=Vector(0.1, 0.1, 0.1),    
+            kd=Vector(0.5, 0.5, 0.5),   
+            ks=Vector(1.0, 1.0, 1.0),   
+            ke=Vector(0.0, 0.0, 0.0),         
+            ns=300,                          
+            ni=1.0,                           
+            d=1.0
+        )
+    ))
+
+
     scene_lights = Scene(
         lights=[
             Light(Point(30, 10, 20), (190, 190, 190)),
-            Light(Point(-40, 10, 20), (80, 80, 80))  
+            Light(Point(-40, 10, 20), (80, 80, 80)),  
+            Light(Point(0, 40, 0), (80, 80, 80))  
+
         ],
         ambient=(100, 100, 100)
     )
@@ -85,6 +102,6 @@ def fourthDelivery():
         for i in range(camera.h_res):
             ray = camera.get_ray(i, j)
             color = Render.render(ray, objects, scene_lights, depth=0, max_depth=3)
-            image[j, i] = color.array()
+            image[j, i] =  (int(color.b), int(color.g), int(color.r))
 
     return image

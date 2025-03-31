@@ -24,7 +24,7 @@ def main():
 
     #image = secondDelivery()
 
-    image = thirdDelivery()
+    #image = thirdDelivery()
 
     image = fourthDelivery()
 
