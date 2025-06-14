@@ -19,14 +19,17 @@ from phong import Phong
 from third_delivery import thirdDelivery
 from render import Render
 from fourth_delivery import fourthDelivery
+from first_delivery import firstDelivery
 
 def main():
+
+    image = firstDelivery()
 
     #image = secondDelivery()
 
     #image = thirdDelivery()
 
-    image = fourthDelivery()
+    #image = fourthDelivery()
 
 
     cv2.imshow("Ray Casting - Interseção com Esferas, Planos e Malhas de triângulos", image)
