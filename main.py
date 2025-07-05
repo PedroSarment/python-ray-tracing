@@ -23,9 +23,9 @@ from first_delivery import firstDelivery
 
 def main():
 
-    image = firstDelivery()
+    #image = firstDelivery()
 
-    #image = secondDelivery()
+    image = secondDelivery()
 
     #image = thirdDelivery()
 
