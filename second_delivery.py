@@ -10,8 +10,8 @@ from camera import Camera
 
 def secondDelivery():
 
-    camera_position = Point(0, 0, 30)
-    camera_look_at = Point(8, 2, 0)
+    camera_position = Point(0, 0, 40)
+    camera_look_at = Point(0, 0, 0)
     camera_up_vector = Vector(0, 1, 0)
     camera_distance = 4
     camera_h_res = 800
@@ -21,7 +21,7 @@ def secondDelivery():
 
     image = np.zeros((camera_v_res, camera_h_res, 3), dtype=np.uint8)
 
-    obj_reader = ObjReader("./inputs/icosahedron/icosahedron.obj")
+    obj_reader = ObjReader("./inputs/cubo/cubo.obj")
 
     mesh = Mesh(
         vertices=obj_reader.get_vertices(),
@@ -34,12 +34,13 @@ def secondDelivery():
     ]
 
     meshRotated = copy.deepcopy(mesh)
-    translation_matrix = Transformation.translation(3, -1, 0) 
+    translation_matrix = Transformation.translation(2, 0, 0) 
     meshRotated.transform(translation_matrix)
-    matrix = Transformation.rotation_x(np.radians(180))
+    matrix = Transformation.rotation_z(np.radians(45))
     meshRotated.transform(matrix)
-    matrix = Transformation.rotation_z(np.radians(10))
-    meshRotated.transform(matrix)
+    #matrix = Transformation.rotation_x(np.radians(180))
+    #meshRotated.transform(matrix)
+
     objects.append( meshRotated )
 
 

@@ -37,17 +37,6 @@ def thirdDelivery():
         mesh
     ]
 
-    meshRotated = copy.deepcopy(mesh)
-    translation_matrix = Transformation.translation(3, 0, 0) 
-    meshRotated.transform(translation_matrix)
-    matrix = Transformation.rotation_x(np.radians(180))
-    meshRotated.transform(matrix)
-    matrix = Transformation.rotation_z(np.radians(10))
-    meshRotated.transform(matrix)
-    matrix = Transformation.rotation_y(np.radians(60))
-    meshRotated.transform(matrix)
-    objects.append( meshRotated )
-
     scene_lights = Scene(
         lights=[
             Light(Point(30, 10, 20), (190, 190, 190)),
