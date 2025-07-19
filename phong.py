@@ -14,14 +14,14 @@ class Phong:
         N = normal.normalize()
         V = view_dir.normalize()
 
-        if N.dot(V) < 0:
-            N = N * -1
-
         ambient_intensity = Vector(*scene_lights.ambient)
         color = ka * (ambient_intensity / 255)
 
         for light in scene_lights.lights:
+            #Direção da Luz 
             L = (light.position - hit_point).normalize()
+            
+            #Direção do Observador
             R = ((N * 2 * N.dot(L)) - L).normalize()
 
             shadow_origin = hit_point + N * 1e-3

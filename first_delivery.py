@@ -16,7 +16,7 @@ def firstDelivery():
     camera_position = Point(0, 0, 60)
     camera_look_at = Point(3, 0, 0)
     camera_up_vector = Vector(0, -1, 0)
-    camera_distance = 4
+    camera_distance = 1
     camera_h_res = 800
     camera_v_res = 600
 
