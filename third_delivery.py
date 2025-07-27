@@ -17,7 +17,7 @@ from plane import Plane
 
 def thirdDelivery():
 
-    camera_position = Point(0, 0, 10)
+    camera_position = Point(0, 0, 20)
     camera_look_at = Point(0, 0, 0)
     camera_up_vector = Vector(0, 1, 0)
     camera_distance = 1
@@ -28,7 +28,7 @@ def thirdDelivery():
 
     image = np.zeros((camera_v_res, camera_h_res, 3), dtype=np.uint8)
 
-    # obj_reader = ObjReader("./inputs/icosahedron/icosahedron.obj")
+    obj_reader = ObjReader("./inputs/icosahedron/icosahedron.obj")
 
     # mesh = Mesh(
     #     vertices=obj_reader.get_vertices(),
@@ -37,7 +37,7 @@ def thirdDelivery():
     # )
 
     objects = [
-        #mesh
+       # mesh
     ]
 
 
@@ -97,8 +97,8 @@ def thirdDelivery():
             kd=Vector(0.0, 0.0, 0.0),          
             ks=Vector(0.9, 0.9, 0.9),  
             ke=Vector(0.0, 0.0, 0.0),
-            ns=1, 
-            ni=1.0,                              
+            ns=100, 
+            ni=1,                              
             d=1.0
         )
     ))

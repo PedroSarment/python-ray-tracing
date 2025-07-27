@@ -27,9 +27,9 @@ def main():
 
     #image = secondDelivery()
 
-    image = thirdDelivery()
+    #image = thirdDelivery()
 
-    #image = fourthDelivery()
+    image = fourthDelivery()
 
 
     cv2.imshow("Ray Casting - Interseção com Esferas, Planos e Malhas de triângulos", image)

@@ -31,51 +31,77 @@ def fourthDelivery():
 
     objects = []
 
-    objects.append(Sphere(
-    center=Point(-1, 0, 0),
-    radius=1.5,
-    material=Material(
-        ka=Vector(0.0, 0.1, 0.0),           
-        kd=Vector(0.1, 0.6, 0.1),          
-        ks=Vector(1.0, 1.0, 1.0),  
-        ke=Vector(0.0, 0.0, 0.0),
-        ns=100, 
-        ni=1.0,                              
-        d=1.0
+    #Esfera Opaca Fundo
+    objects.append(
+        Sphere(
+            center=Point(8, 0, -10),
+            radius=6.0,
+            material=Material(
+                ka=Vector(0.0, 0.0, 0.9),           
+                kd=Vector(0.1, 0.0, 0.0),          
+                ks=Vector(1.0, 1.0, 1.0),  
+                ke=Vector(0.0, 0.0, 0.0),
+                ns=100, 
+                ni=1.0,                              
+                d=1.0
+            )
+        )
     )
-    ))
 
-    objects.append(Sphere(
-        center=Point(3, 0, 0),
-        radius=1.5,
-        material=Material(
-            ka=Vector(0.1, 0.1, 0.1),
-            kd=Vector(0.1, 0.3, 0.8),
-            ks=Vector(0.5, 0.5, 0.5),
-            ke=Vector(0.0, 0.0, 0.0),
-            ns=30,
-            ni=1.5,
-            d=1.0   
+    #espelho
+    objects.append(
+        Sphere(
+            center=Point(8, 0, 0),
+            radius=1.8,
+            material=Material(
+                ka=Vector(0.0, 0.0, 0.0),           
+                kd=Vector(0.1, 0.0, 0.0),          
+                ks=Vector(1.0, 1.0, 1.0),  
+                ke=Vector(0.0, 0.0, 0.0),
+                ns=1000, 
+                ni=10,                              
+                d=1.0
+            )
         )
-    ))
+    )
 
-    objects.append(Sphere(
-    center=Point(8, 0, 0),
-    radius=1.5,
-    material=Material(
-        ka=Vector(0.05, 0.05, 0.05),
-        kd=Vector(0.2, 0.2, 0.2),
-        ks=Vector(1.0, 1.0, 1.0),
-        ke=Vector(0.0, 0.0, 0.0),
-        ns=100,
-        ni=2.5,
-        d=1.0
+    #vidro
+    objects.append(
+        Sphere(
+            center=Point(0, 0, 0),
+            radius=1.8,
+            material=Material(
+                ka=Vector(0.0, 0.0, 0.0),           
+                kd=Vector(0.05, 0.05, 0.05),          
+                ks=Vector(1.0, 1.0, 1.0),  
+                ke=Vector(0.0, 0.0, 0.0),
+                ns=300, 
+                ni=1.5,                              
+                d=0.0
+            )
         )
-    ))
+    )
+
+    #Esfera atrás da camera
+    objects.append(
+        Sphere(
+            center=Point(0, 0, 30),
+            radius=1.7,
+            material=Material(
+                ka=Vector(0.0, 0.1, 0.2),           
+                kd=Vector(0.05, 0.05, 0.1),          
+                ks=Vector(0.3, 0.3, 0.3),  
+                ke=Vector(0.0, 0.0, 0.0),
+                ns=10, 
+                ni=1.0,                              
+                d=1.0
+            )
+        )
+    )
 
     objects.append(Plane(
         point=Point(0, -5, 0),
-        normal=Vector(0, 5, 0),
+        normal=Vector(0, 1, 0),
         material=Material(
             ka=Vector(0.1, 0.1, 0.1),    
             kd=Vector(0.5, 0.5, 0.5),   
@@ -90,9 +116,9 @@ def fourthDelivery():
 
     scene_lights = Scene(
         lights=[
-            Light(Point(30, 10, 20), (190, 190, 190)),
-            Light(Point(-40, 10, 20), (80, 80, 80)),  
-            Light(Point(0, 40, 0), (80, 80, 80))  
+            Light(Point(4, 0, 30), (190, 190, 190)),
+            Light(Point(-40, 10, 20), (40, 40, 40)),  
+            Light(Point(0, 40, 0), (90, 90, 90))  
 
         ],
         ambient=(100, 100, 100)
@@ -101,7 +127,7 @@ def fourthDelivery():
     for j in range(camera.v_res):
         for i in range(camera.h_res):
             ray = camera.get_ray(i, j)
-            color = Render.render(ray, objects, scene_lights, depth=0, max_depth=3)
+            color = Render.render(ray, objects, scene_lights, ior_i=1.0, depth=0, max_depth=3)
             image[j, i] =  (int(color.b), int(color.g), int(color.r))
 
     return image

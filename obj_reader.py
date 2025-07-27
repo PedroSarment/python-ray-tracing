@@ -155,24 +155,6 @@ class ObjReader:
         '''
         return self.vertices
     
-    def get_kr(self):
-        '''
-            Estima o coeficiente de reflexão com base no índice de refração (ni).
-            Quanto maior o ni, mais reflexivo é o material.
-            Retorna um vetor RGB (mesmo valor nos três canais).
-        '''
-        reflectance = min(max((self.cur_material.ni - 1) / (self.cur_material.ni + 1), 0), 1)
-        return Vector(reflectance, reflectance, reflectance)
-
-    def get_kt(self):
-        '''
-            Calcula o coeficiente de transmissão com base na opacidade (d).
-            d = 1.0 significa totalmente opaco → kt = 0
-            d = 0.0 significa totalmente transparente → kt = 1
-            Retorna um vetor RGB (mesmo valor nos três canais).
-        '''
-        transmission = 1.0 - self.cur_material.d  # Inverso da opacidade
-        return Vector(transmission, transmission, transmission)
 
     def print_faces_points(self):
         for(enum, face) in enumerate(self.faces_points):

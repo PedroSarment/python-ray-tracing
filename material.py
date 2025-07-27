@@ -24,8 +24,8 @@ class Material:
         # Opacidade
         self.d = d
 
-        reflectance = min(max((self.ni - 1) / (self.ni + 1), 0), 1)
-        self.kr = self.ks * reflectance
+        # reflectance = min(max((self.ni - 1) / (self.ni + 1), 0), 1)
+        # self.kr = self.ks * reflectance
 
         transmission = 1.0 - self.d
         self.kt = Vector(transmission, transmission, transmission)
