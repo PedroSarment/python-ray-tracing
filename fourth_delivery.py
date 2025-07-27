@@ -69,7 +69,7 @@ def fourthDelivery():
     objects.append(
         Sphere(
             center=Point(0, 0, 0),
-            radius=1.8,
+            radius=2,
             material=Material(
                 ka=Vector(0.0, 0.0, 0.0),           
                 kd=Vector(0.05, 0.05, 0.05),          
@@ -86,7 +86,7 @@ def fourthDelivery():
     objects.append(
         Sphere(
             center=Point(0, 0, 30),
-            radius=1.7,
+            radius=2,
             material=Material(
                 ka=Vector(0.0, 0.1, 0.2),           
                 kd=Vector(0.05, 0.05, 0.1),          
